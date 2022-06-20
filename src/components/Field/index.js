@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 import { Mine } from '../Mine';
+import { Flag } from '../Flag';
 
 import styles from './styles';
 
-const Field = ({ mined = '', opened = false, nearMines = '', exploded = false }) => {
+const Field = ({ mined = '', opened = false, nearMines = '', exploded = false, flagged = false }) => {
   const styleField = [styles.field]
   if(opened) styleField.push(styles.opened)
   if(exploded) styleField.push(styles.exploded)
-  if(styleField.length === 1) styleField.push(styles.regular)
+  if(flagged) styleField.push(styles.flagged)
+  if(!opened && !exploded) styleField.push(styles.regular)
 
   let color = null
   if(nearMines > 0) {
@@ -28,6 +30,7 @@ const Field = ({ mined = '', opened = false, nearMines = '', exploded = false })
       }
 
       {mined && opened ? <Mine /> : false}
+      {flagged && !opened ? <Flag /> : false}
     </View>
   )
 }

@@ -10,6 +10,7 @@ const MineField = ({ board, onOpenField }) => {
     const columns = row.map((field, c) => {
       return <Field {...field} key={c} 
         onOpen={() => onOpenField(r, c)}
+        onSelect={e => onSelectField(r, c)}
       />
     })
     return <View key={r} style={{flexDirection: 'row'}}>{columns}</View>

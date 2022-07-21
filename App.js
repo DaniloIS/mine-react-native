@@ -11,7 +11,8 @@ import {
   openField,
   hadExplosion,
   wonGame,
-  showMines
+  showMines,
+  invertFlag
 } from './src/functions';
 
 export default function App() {
@@ -39,9 +40,8 @@ export default function App() {
   }, [])
 
   const onOpenField = (row, column) => {
-    console.log(state.board)
     const board = cloneBoard(state.board)
-    onOpenField(board, row, column)
+    openField(board, row, column)
     const lost  = hadExplosion(board)
     const won = wonGame(board)
 
@@ -56,6 +56,18 @@ export default function App() {
 
     setState({ board, lost, won })
   }
+
+  const onSelectField = (row, column) => {
+    const board = cloneBoard(state.board)
+    invertFlag(board, row, column)
+    const won = wonGame(board)
+
+    if(won) {
+      Alert.alert('Parabéns', 'Você Venceu!')
+    }
+
+    setState({ board, won })
+  }
   
   return (
     <View style={styles.container}>
@@ -67,7 +79,7 @@ export default function App() {
           {params.getRowsAmount()}x{params.getColumnsAmount()}
       </Text>
       <View style={styles.board}>
-        <MineField board={createState().board} onOpenField={onOpenField} />
+        <MineField board={createState().board} onOpenField={onOpenField} onSelectField={onSelectField} />
       </View>
     </View>
   )

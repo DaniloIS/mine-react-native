@@ -6,7 +6,7 @@ import { Flag } from '../Flag';
 
 import styles from './styles';
 
-const Field = ({ mined = '', opened = false, nearMines = '', exploded = false, flagged = false, onOpen }) => {
+const Field = ({ mined = '', opened = false, nearMines = '', exploded = false, flagged = false, onOpen, onSelect }) => {
   const styleField = [styles.field]
   if(opened) styleField.push(styles.opened)
   if(exploded) styleField.push(styles.exploded)
@@ -22,7 +22,7 @@ const Field = ({ mined = '', opened = false, nearMines = '', exploded = false, f
   }
 
   return (
-    <TouchableWithoutFeedback onPress={onOpen}>
+    <TouchableWithoutFeedback onPress={onOpen} onLongPress={onSelect}>
       <View style={styleField}>
         {!mined && opened && nearMines > 0 ? 
           <Text style={[styles.label, { color: color }]}>{nearMines}</Text>

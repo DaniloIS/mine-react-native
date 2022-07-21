@@ -1,12 +1,22 @@
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { params } from './src/params';
 import { Field } from './src/components/Field';
 import { MineField } from './src/components/MineField';
-import { createMinedBoard } from './src/functions';
+import {
+  createMinedBoard,
+  cloneBoard,
+  openField,
+  hadExplosion,
+  wonGame,
+  showMines
+} from './src/functions';
 
 export default function App() {
+  const [state, setState] = useState({});
+
   const minesAmount = () => {
     const cols = params.getColumnsAmount()
     const rows = params.getRowsAmount()
@@ -19,7 +29,32 @@ export default function App() {
 
     return {
       board: createMinedBoard(rows, cols, minesAmount()),
+      won: false,
+      lost: false
     }
+  }
+
+  useEffect(() => {
+    setState(createState())
+  }, [])
+
+  const onOpenField = (row, column) => {
+    console.log(state.board)
+    const board = cloneBoard(state.board)
+    onOpenField(board, row, column)
+    const lost  = hadExplosion(board)
+    const won = wonGame(board)
+
+    if(lost) {
+      showMines(board)
+      Alert.alert('Perdeeeeeu!', 'Que buuuro!')
+    }
+
+    if(won) {
+      Alert.alert('Parabéns', 'Você Venceu!')
+    }
+
+    setState({ board, lost, won })
   }
   
   return (
@@ -32,7 +67,7 @@ export default function App() {
           {params.getRowsAmount()}x{params.getColumnsAmount()}
       </Text>
       <View style={styles.board}>
-        <MineField board={createState().board} />
+        <MineField board={createState().board} onOpenField={onOpenField} />
       </View>
     </View>
   )

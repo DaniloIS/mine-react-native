@@ -70,7 +70,9 @@ const safeNeighborhood = (board, row, column) => {
 
 const openField = (board, row, column) => {
   const field = board[row][column]
-  console.log(field)
+  // const idxRow = board.indexOf(board[row])
+  // const idxCol = board[idxRow].indexOf(field)
+  // console.log(board[idxRow][idxCol])
   if(!field.opened) {
     field.opened = true;
     if(field.mined) {
@@ -99,6 +101,9 @@ const invertFlag = (board, row, column) => {
   field.flagged = !field.flagged
 }
 
+const flagsUsed = board => fields(board)
+  .filter(field => field.flagged).length
+
 export {
   createMinedBoard,
   cloneBoard,
@@ -106,5 +111,6 @@ export {
   hadExplosion,
   wonGame,
   showMines,
-  invertFlag
+  invertFlag,
+  flagsUsed
 };

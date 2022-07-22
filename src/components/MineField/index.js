@@ -5,7 +5,7 @@ import { Field } from '../Field';
 
 import styles from './styles';
 
-const MineField = ({ board, onOpenField }) => {
+const MineField = ({ board, onOpenField, onSelectField }) => {
   const rows = board.map((row, r) => {
     const columns = row.map((field, c) => {
       return <Field {...field} key={c} 
